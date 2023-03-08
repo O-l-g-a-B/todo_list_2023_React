@@ -4,6 +4,8 @@ import AddTodo from './components/AddTodo/AddTodo';
 import TodoList from './components/TodoList/TodoList';
 import { Container } from "react-bootstrap";
 
+const LOCAL_STORAGE_KEY = 'tododo:todo';
+
 function App() {
 
   const [todo, setTodo] = useState([
@@ -13,18 +15,27 @@ function App() {
       status: true
     }
   ])
-//const [todos, setTodos] = useState(
-//   JSON.parse(localStorage('todos')) || []
-//  )
 
-  //useEffect(() => {
-  //  localStorage.setItem('todos', JSON.stringify(todos))
-  //}, [todos])
+  function loadSavedTasks() {
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if(saved) {
+      setTodo(JSON.parse(saved));
+    }
+  }
+
+  function setTasksAndSave(newTasks) {
+    setTodo(newTasks);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks));
+  }
+
+  useEffect(() => {
+    loadSavedTasks();
+  }, [])
 
   return (
     <Container>
       <Header />
-      <AddTodo todo={todo} setTodo={setTodo} />
+      <AddTodo todo={todo} setTodo={setTodo} setTasksAndSave={setTasksAndSave} />
       <TodoList todo={todo} setTodo={setTodo} />
     </Container>
   );

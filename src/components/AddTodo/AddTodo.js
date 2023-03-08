@@ -3,13 +3,13 @@ import {v1 as uuid} from 'uuid'
 import { Row, Col, Button, FormControl } from 'react-bootstrap'
 import s from './AddTodo.module.css'
 
-function AddTodo({todo, setTodo}) {
+function AddTodo({todo, setTasksAndSave}) {
 
     const [value, setValue] = useState('')
 
     function saveTodo() {
         if(value) {
-        setTodo(
+            setTasksAndSave(
             [...todo, {
                 id: uuid(),
                 title: value,
